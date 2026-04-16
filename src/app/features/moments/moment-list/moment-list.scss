@@ -1,0 +1,212 @@
+.moment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ─── Table card ───────────────────────────────────────────
+.table-card {
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.moments-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-primary);
+
+  th, td {
+    padding: 18px 20px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  thead tr {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  th {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-navy);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.15s;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background-color: #fafbfc; }
+  }
+
+  td {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--color-navy);
+  }
+}
+
+.sort-icon {
+  font-size: 14px !important;
+  vertical-align: middle;
+  margin-left: 4px;
+  color: var(--color-navy);
+  opacity: 0.7;
+}
+
+// ─── Column widths ────────────────────────────────────────
+.col-srno   { width: 90px; text-align: center; }
+.col-image  { width: 80px; text-align: center; }
+.col-title  { }
+.col-tags   { width: 180px; }
+.col-action { width: 100px; text-align: center; }
+
+// ─── Avatar ───────────────────────────────────────────────
+.moment-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+// ─── Tag chips ────────────────────────────────────────────
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color-green);
+  border-radius: 14px;
+  padding: 3px 6px 3px 12px;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-navy);
+
+  &__remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    transition: opacity 0.2s;
+    &:hover { opacity: 0.6; }
+  }
+}
+
+// ─── Action buttons ───────────────────────────────────────
+.action-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s, background-color 0.2s;
+
+  span { font-size: 20px; }
+
+  &--edit {
+    color: var(--color-navy);
+    &:hover { background-color: rgba(0,27,48,0.07); }
+  }
+
+  &--delete {
+    color: var(--color-navy);
+    &:hover { background-color: rgba(220,53,69,0.08); color: #c0392b; }
+  }
+}
+
+// ─── Pagination ───────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 4px 8px;
+  font-family: var(--font-primary);
+
+  &__label {
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  &__size-select {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    select {
+      appearance: none;
+      border: none;
+      border-bottom: 1px solid var(--color-navy);
+      background: transparent;
+      font-family: var(--font-primary);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-navy);
+      padding: 2px 20px 2px 4px;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  &__size-arrow {
+    position: absolute;
+    right: 0;
+    font-size: 16px !important;
+    color: var(--color-navy);
+    pointer-events: none;
+  }
+
+  &__range {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    min-width: 90px;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__nav-btn {
+    background: none;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: var(--color-navy);
+    transition: background-color 0.2s;
+
+    span { font-size: 20px; }
+
+    &:hover:not(:disabled) { background-color: rgba(0,27,48,0.07); }
+    &:disabled { opacity: 0.35; cursor: not-allowed; }
+  }
+}

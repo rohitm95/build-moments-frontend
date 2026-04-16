@@ -1,0 +1,177 @@
+<div class="auth-page">
+  <!-- Header -->
+  <header class="auth-header">
+    <button class="auth-header__back" (click)="goBack()" aria-label="Go back">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="auth-header__logo">
+      <img src="/assets/images/logo.svg" alt="5D Solutions" />
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="auth-body">
+    <h1 class="auth-body__title">Sign Up</h1>
+    <p class="auth-body__subtitle">To be a member</p>
+
+    @if (errorMessage()) {
+      <div class="auth-error" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form class="auth-form auth-form--wide" (ngSubmit)="onSubmit()" novalidate>
+      <div class="auth-form__grid">
+        <!-- First Name -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="su-firstname">First Name</label>
+          <div class="auth-field__row">
+            <div class="auth-field__icon" aria-hidden="true">
+              <span class="material-icons">person_outline</span>
+            </div>
+            <input
+              id="su-firstname"
+              class="auth-field__input"
+              type="text"
+              placeholder="Robert"
+              autocomplete="given-name"
+              [ngModel]="firstName()"
+              (ngModelChange)="firstName.set($event)"
+              name="firstName"
+            />
+          </div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="su-lastname">Last Name</label>
+          <div class="auth-field__row">
+            <div class="auth-field__icon" aria-hidden="true">
+              <span class="material-icons">person_outline</span>
+            </div>
+            <input
+              id="su-lastname"
+              class="auth-field__input"
+              type="text"
+              placeholder="Downey Jr."
+              autocomplete="family-name"
+              [ngModel]="lastName()"
+              (ngModelChange)="lastName.set($event)"
+              name="lastName"
+            />
+          </div>
+        </div>
+
+        <!-- Mobile No. -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="su-phone">Mobile No.</label>
+          <div class="auth-field__row">
+            <div class="auth-field__phone-prefix">
+              <span class="flag">🇮🇳</span>
+              <select
+                [ngModel]="countryCode()"
+                (ngModelChange)="countryCode.set($event)"
+                name="countryCode"
+                aria-label="Country code"
+              >
+                <option value="+91">+91 ▾</option>
+                <option value="+1">+1 ▾</option>
+                <option value="+44">+44 ▾</option>
+              </select>
+            </div>
+            <input
+              id="su-phone"
+              class="auth-field__input"
+              type="tel"
+              placeholder="9876543210"
+              autocomplete="tel"
+              [ngModel]="phone()"
+              (ngModelChange)="phone.set($event)"
+              name="phone"
+            />
+          </div>
+        </div>
+
+        <!-- Email ID -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="su-email">Email-ID</label>
+          <div class="auth-field__row">
+            <div class="auth-field__icon" aria-hidden="true">
+              <span class="material-icons">mail_outline</span>
+            </div>
+            <input
+              id="su-email"
+              class="auth-field__input"
+              type="email"
+              placeholder="rdj@gmail.com"
+              autocomplete="email"
+              [ngModel]="email()"
+              (ngModelChange)="email.set($event)"
+              name="email"
+            />
+          </div>
+        </div>
+
+        <!-- City -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="su-city">City</label>
+          <input
+            id="su-city"
+            class="auth-field__plain-input"
+            type="text"
+            placeholder="Pune"
+            autocomplete="address-level2"
+            [ngModel]="city()"
+            (ngModelChange)="city.set($event)"
+            name="city"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field">
+          <label class="auth-field__label" for="su-password">Enter Password</label>
+          <div class="auth-field__row">
+            <div class="auth-field__icon" aria-hidden="true">
+              <span class="material-icons">lock_outline</span>
+            </div>
+            <input
+              id="su-password"
+              class="auth-field__input"
+              [type]="showPassword() ? 'text' : 'password'"
+              placeholder="••••••••••••"
+              autocomplete="new-password"
+              [ngModel]="password()"
+              (ngModelChange)="password.set($event)"
+              name="password"
+            />
+            <button
+              type="button"
+              class="auth-field__toggle"
+              (click)="togglePassword()"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+            >
+              <span class="material-icons">
+                {{ showPassword() ? 'visibility' : 'visibility_off' }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="auth-submit-btn"
+        [disabled]="isLoading()"
+        aria-label="Submit registration"
+      >
+        @if (isLoading()) {
+          <span class="spinner"></span>
+        } @else {
+          Submit
+        }
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Already a member?&nbsp;<a routerLink="/login">Sign In</a>
+    </p>
+  </div>
+</div>

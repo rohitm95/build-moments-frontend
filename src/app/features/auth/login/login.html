@@ -1,0 +1,90 @@
+<div class="auth-page">
+  <!-- Header -->
+  <header class="auth-header">
+    <button class="auth-header__back" (click)="goBack()" aria-label="Go back">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="auth-header__logo">
+      <img src="/assets/images/logo.svg" alt="5D Solutions" />
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div class="auth-body">
+    <h1 class="auth-body__title">Sign In</h1>
+    <p class="auth-body__subtitle">To start using the app</p>
+
+    @if (errorMessage()) {
+      <div class="auth-error" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form class="auth-form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Email -->
+      <div class="auth-field">
+        <label class="auth-field__label" for="login-email">Enter email id</label>
+        <div class="auth-field__row">
+          <div class="auth-field__icon" aria-hidden="true">
+            <span class="material-icons">mail_outline</span>
+          </div>
+          <input
+            id="login-email"
+            class="auth-field__input"
+            type="email"
+            placeholder="ministry@government.in"
+            autocomplete="email"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+            name="email"
+          />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="auth-field">
+        <label class="auth-field__label" for="login-password">Enter Password</label>
+        <div class="auth-field__row">
+          <div class="auth-field__icon" aria-hidden="true">
+            <span class="material-icons">lock_outline</span>
+          </div>
+          <input
+            id="login-password"
+            class="auth-field__input"
+            [type]="showPassword() ? 'text' : 'password'"
+            placeholder="Password"
+            autocomplete="current-password"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            name="password"
+          />
+          <button
+            type="button"
+            class="auth-field__toggle"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+          >
+            <span class="material-icons">
+              {{ showPassword() ? 'visibility' : 'visibility_off' }}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="auth-submit-btn"
+        [disabled]="isLoading()"
+        aria-label="Sign in"
+      >
+        @if (isLoading()) {
+          <span class="spinner"></span>
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Not a member?&nbsp;<a routerLink="/signup">Sign Up</a>
+    </p>
+  </div>
+</div>

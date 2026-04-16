@@ -1,0 +1,87 @@
+<div class="app-shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="sidebar__logo">
+      <img src="/assets/images/logo.svg" alt="5D Solutions" class="sidebar__logo-img" />
+    </div>
+
+    <nav class="sidebar__nav">
+      <a routerLink="/profile" class="sidebar__nav-item sidebar__nav-item--plain">Profile</a>
+
+      <div class="sidebar__nav-group" [class.sidebar__nav-group--active]="momentsExpanded()">
+        <button
+          class="sidebar__nav-group-header"
+          (click)="toggleMoments()"
+          [attr.aria-expanded]="momentsExpanded()"
+          aria-controls="moments-submenu"
+        >
+          <span>Moments</span>
+          <img
+            src="/assets/icons/chevron-down.svg"
+            alt=""
+            class="sidebar__chevron"
+            [class.sidebar__chevron--up]="momentsExpanded()"
+          />
+        </button>
+
+        @if (momentsExpanded()) {
+          <ul class="sidebar__submenu" id="moments-submenu">
+            <li class="sidebar__submenu-item">
+              <a
+                routerLink="/moments"
+                routerLinkActive="sidebar__submenu-link--active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="sidebar__submenu-link"
+                #momentListLink="routerLinkActive"
+              >
+                @if (momentListLink.isActive) {
+                  <img src="/assets/icons/bullet.svg" alt="" class="sidebar__bullet" />
+                }
+                Moment List
+              </a>
+            </li>
+            <li class="sidebar__submenu-item">
+              <a
+                routerLink="/moments/add"
+                routerLinkActive="sidebar__submenu-link--active"
+                class="sidebar__submenu-link sidebar__submenu-link--bold"
+                #addMomentLink="routerLinkActive"
+              >
+                @if (addMomentLink.isActive) {
+                  <img src="/assets/icons/bullet.svg" alt="" class="sidebar__bullet" />
+                }
+                Add new moment
+              </a>
+            </li>
+          </ul>
+        }
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Right area -->
+  <div class="main-area">
+    <!-- Top bar -->
+    <header class="topbar" aria-label="Top navigation">
+      <button class="topbar__menu-btn" aria-label="Open menu">
+        <img src="/assets/icons/menu.svg" alt="" />
+      </button>
+      <div class="topbar__user">
+        <img src="/assets/images/user-avatar.jpg" alt="User avatar" class="topbar__avatar" />
+        <img src="/assets/icons/chevron-down.svg" alt="User menu" class="topbar__user-chevron" />
+      </div>
+    </header>
+
+    <!-- Page title -->
+    @if (pageTitle()) {
+      <div class="page-title-bar">
+        <h1 class="page-title">{{ pageTitle() }}</h1>
+      </div>
+    }
+
+    <!-- Content -->
+    <main class="main-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<div class="add-moment">
+  <!-- Form card -->
+  <div class="form-card">
+    <div class="form-card__inner">
+      <!-- Left: form fields -->
+      <div class="form-section">
+        <!-- Title -->
+        <div class="field-group">
+          <label class="field-label" for="moment-title">Title</label>
+          <input
+            id="moment-title"
+            class="field-input"
+            type="text"
+            [ngModel]="title()"
+            (ngModelChange)="title.set($event)"
+            placeholder="Enter a title"
+            aria-label="Moment title"
+          />
+          <div class="field-divider"></div>
+        </div>
+
+        <!-- Tags -->
+        <div class="field-group">
+          <label class="field-label" for="moment-tags">Tags</label>
+          <div class="tags-area">
+            @for (tag of tags(); track tag) {
+              <span class="tag-chip">
+                <span class="tag-chip__label">{{ tag }}</span>
+                <button
+                  class="tag-chip__remove"
+                  (click)="removeTag(tag)"
+                  [attr.aria-label]="'Remove tag ' + tag"
+                  title="Remove tag"
+                >
+                  <img src="/assets/icons/close-tag.svg" alt="" width="14" height="14" />
+                </button>
+              </span>
+            }
+            <input
+              id="moment-tags"
+              class="tag-input"
+              type="text"
+              placeholder="Add tag…"
+              [ngModel]="tagInput()"
+              (ngModelChange)="tagInput.set($event)"
+              (keydown)="addTag($event)"
+              aria-label="Add tag"
+            />
+          </div>
+          <div class="field-divider"></div>
+        </div>
+
+        <!-- Uploading files -->
+        <div class="upload-list">
+          <p class="upload-list__label">Uploading</p>
+
+          @for (file of uploadingFiles(); track file.id) {
+            <div class="upload-item">
+              <div class="upload-item__icon">
+                <img
+                  [src]="file.iconType === 'image' ? '/assets/icons/file-image.svg' : '/assets/icons/file-text.svg'"
+                  [alt]="file.iconType === 'image' ? 'Image file' : 'Text file'"
+                  width="42"
+                  height="42"
+                />
+              </div>
+              <div class="upload-item__info">
+                <div class="upload-item__header">
+                  <span class="upload-item__name">{{ file.name }}</span>
+                  <button
+                    class="upload-item__cancel"
+                    (click)="removeFile(file.id)"
+                    [attr.aria-label]="'Cancel upload of ' + file.name"
+                    title="Cancel upload"
+                  >
+                    <img src="/assets/icons/close-file.svg" alt="" width="10" height="10" />
+                  </button>
+                </div>
+                <div class="upload-item__progress-track">
+                  <div
+                    class="upload-item__progress-fill"
+                    [style.width.%]="file.progress"
+                    [attr.aria-valuenow]="file.progress"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <div class="upload-item__stats">
+                  <span>{{ file.progress }}% done</span>
+                  <span>{{ file.size }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right: drag and drop zone -->
+      <div
+        #dropZone
+        class="drop-zone"
+        [class.drop-zone--active]="isDragOver()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave()"
+        (drop)="onDrop($event)"
+        role="region"
+        aria-label="File upload drop zone"
+      >
+        <img src="/assets/icons/upload.svg" alt="" class="drop-zone__icon" />
+        <p class="drop-zone__text">Drag and drop file</p>
+        <p class="drop-zone__or">OR</p>
+        <button
+          class="drop-zone__browse-btn"
+          (click)="onBrowseClick()"
+          mat-ripple
+          aria-label="Browse files to upload"
+        >
+          Browse
+        </button>
+        <input
+          #fileInput
+          type="file"
+          multiple
+          class="drop-zone__file-input"
+          (change)="onFileSelected($event)"
+          aria-hidden="true"
+          tabindex="-1"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit button -->
+  <div class="submit-row">
+    <button class="submit-btn" (click)="onSubmit()" aria-label="Submit new moment">
+      Submit
+    </button>
+  </div>
+</div>

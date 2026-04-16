@@ -1,0 +1,111 @@
+<div class="moment-list">
+  <div class="table-card">
+    <table class="moments-table" aria-label="Moments list">
+      <thead>
+        <tr>
+          <th class="col-srno">
+            Sr.No
+            <span class="material-icons sort-icon">arrow_upward</span>
+          </th>
+          <th class="col-image">Image</th>
+          <th class="col-title">
+            Title
+            <span class="material-icons sort-icon">arrow_upward</span>
+          </th>
+          <th class="col-tags">
+            Tags
+            <span class="material-icons sort-icon">arrow_upward</span>
+          </th>
+          <th class="col-action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (moment of pagedItems(); track moment.id) {
+          <tr>
+            <td class="col-srno">{{ moment.id }}</td>
+            <td class="col-image">
+              <img
+                [src]="moment.imageUrl"
+                [alt]="'Moment ' + moment.id + ' image'"
+                class="moment-avatar"
+              />
+            </td>
+            <td class="col-title">{{ moment.title }}</td>
+            <td class="col-tags">
+              <div class="tag-list">
+                @for (tag of moment.tags; track tag) {
+                  <span class="tag-chip">
+                    <span class="tag-chip__label">{{ tag }}</span>
+                    <button
+                      class="tag-chip__remove"
+                      (click)="removeTag(moment, tag)"
+                      [attr.aria-label]="'Remove tag ' + tag"
+                    >
+                      <img src="/assets/icons/close-tag.svg" alt="" width="12" height="12" />
+                    </button>
+                  </span>
+                }
+              </div>
+            </td>
+            <td class="col-action">
+              <div class="action-btns">
+                <button
+                  class="action-btn action-btn--edit"
+                  (click)="onEdit(moment)"
+                  [attr.aria-label]="'Edit moment ' + moment.id"
+                  title="Edit"
+                >
+                  <span class="material-icons">edit</span>
+                </button>
+                <button
+                  class="action-btn action-btn--delete"
+                  (click)="onDelete(moment)"
+                  [attr.aria-label]="'Delete moment ' + moment.id"
+                  title="Delete"
+                >
+                  <span class="material-icons">delete_outline</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <span class="pagination__label">Items per page</span>
+    <div class="pagination__size-select">
+      <select
+        [ngModel]="pageSize()"
+        (ngModelChange)="onPageSizeChange($event)"
+        aria-label="Items per page"
+      >
+        @for (opt of pageSizeOptions; track opt) {
+          <option [value]="opt">{{ opt }}</option>
+        }
+      </select>
+      <span class="material-icons pagination__size-arrow">keyboard_arrow_down</span>
+    </div>
+    <span class="pagination__range">{{ rangeLabel() }}</span>
+    <div class="pagination__nav">
+      <button
+        class="pagination__nav-btn"
+        (click)="prevPage()"
+        [disabled]="currentPage() === 1"
+        aria-label="Previous page"
+      >
+        <span class="material-icons">chevron_left</span>
+      </button>
+      <button
+        class="pagination__nav-btn"
+        (click)="nextPage()"
+        [disabled]="currentPage() === totalPages()"
+        aria-label="Next page"
+      >
+        <span class="material-icons">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+// Design tokens
+:root {
+  --color-bg: #fdfffe;
+  --color-navy: #001b30;
+  --color-green: #24be8b;
+  --color-text-muted: #4f4f4f;
+  --color-text-dark: #1a1a1a;
+  --color-border: #dbdbdb;
+  --color-border-dashed: #c4c4c4;
+  --color-progress-track: #dddddd;
+  --font-primary: 'Maven Pro', sans-serif;
+  --shadow-card: 0px 0px 8px rgba(201, 201, 201, 0.25);
+  --shadow-sidebar: 4px 0px 9px rgba(201, 201, 201, 0.09);
+  --shadow-topbar: 0px 4px 9px rgba(201, 201, 201, 0.09);
+  --sidebar-width: 259px;
+  --topbar-height: 64px;
+}
+
+html {
+  height: 100%;
+
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--color-bg);
+  color: var(--color-navy);
+  font-family: var(--font-primary);
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}

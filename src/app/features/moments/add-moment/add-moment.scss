@@ -1,0 +1,320 @@
+.add-moment {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+// ─── Form card ────────────────────────────────────────────
+.form-card {
+  background-color: #ffffff;
+  box-shadow: var(--shadow-card);
+  border-radius: 4px;
+  padding: 48px 105px 48px 105px;
+
+  &__inner {
+    display: flex;
+    gap: 80px;
+    align-items: flex-start;
+  }
+}
+
+// ─── Form section (left) ──────────────────────────────────
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.field-input {
+  border: none;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-text-dark);
+  background: transparent;
+  padding: 4px 0;
+  width: 100%;
+
+  &::placeholder {
+    color: #aaa;
+  }
+}
+
+.field-divider {
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+// ─── Tags ─────────────────────────────────────────────────
+.tags-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding-bottom: 4px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--color-green);
+  border-radius: 14px;
+  padding: 3px 10px 3px 14px;
+  font-family: var(--font-primary);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-navy);
+
+  &__label {
+    line-height: 1;
+  }
+
+  &__remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+.tag-input {
+  border: none;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-dark);
+  background: transparent;
+  min-width: 80px;
+
+  &::placeholder {
+    color: #bbb;
+  }
+}
+
+// ─── Upload list ──────────────────────────────────────────
+.upload-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  &__label {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin: 0 0 16px 0;
+  }
+}
+
+.upload-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  &__icon {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__name {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__cancel {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  &__progress-track {
+    width: 236px;
+    height: 3px;
+    background-color: var(--color-progress-track);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: var(--color-navy);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: space-between;
+    width: 236px;
+    font-family: var(--font-primary);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+}
+
+// ─── Drop zone (right) ────────────────────────────────────
+.drop-zone {
+  width: 262px;
+  min-width: 262px;
+  height: 262px;
+  border: 1px dashed var(--color-border-dashed);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: default;
+  transition: background-color 0.2s, border-color 0.2s;
+  position: relative;
+
+  &--active {
+    background-color: rgba(36, 190, 139, 0.06);
+    border-color: var(--color-green);
+  }
+
+  &__icon {
+    width: 36px;
+    height: 33px;
+    object-fit: contain;
+    margin-bottom: 4px;
+  }
+
+  &__text {
+    font-family: var(--font-primary);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--color-navy);
+    margin: 0;
+  }
+
+  &__or {
+    font-family: var(--font-primary);
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--color-navy);
+    margin: 0;
+  }
+
+  &__browse-btn {
+    background-color: var(--color-navy);
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+
+    &:hover {
+      opacity: 0.88;
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+
+  &__file-input {
+    display: none;
+  }
+}
+
+// ─── Submit row ───────────────────────────────────────────
+.submit-row {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 16px;
+}
+
+.submit-btn {
+  background-color: var(--color-navy);
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  border-radius: 28px;
+  padding: 10px 40px;
+  cursor: pointer;
+  min-width: 140px;
+  transition: opacity 0.2s, transform 0.1s;
+
+  &:hover {
+    opacity: 0.88;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
