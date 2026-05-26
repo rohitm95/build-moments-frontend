@@ -1,5 +1,6 @@
 <div class="moment-list">
-  <div class="table-card">
+  @if (totalItems > 0) {
+    <div class="table-card">
     <table class="moments-table" aria-label="Moments list">
       <thead>
         <tr>
@@ -108,4 +109,13 @@
       </button>
     </div>
   </div>
+  } @else {
+    <div class="empty-state-card">
+      <div class="empty-state-content">
+        <span class="material-icons empty-icon">folder_open</span>
+        <h3>No moments found</h3>
+        <p>There are currently no moments available in the list. Create one to get started!</p>
+      </div>
+    </div>
+  }
 </div>

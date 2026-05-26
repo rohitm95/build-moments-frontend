@@ -169,15 +169,18 @@
 
     .flag { font-size: 18px; line-height: 1; }
 
-    select {
+    select, input {
       border: none;
       background: transparent;
       font-family: var(--font-primary);
       font-size: 14px;
       color: var(--color-navy);
       outline: none;
-      cursor: pointer;
+      cursor: text;
       -webkit-appearance: none;
+      width: 40px;
+      padding: 0;
+      text-align: center;
     }
   }
 

@@ -210,3 +210,44 @@
     &:disabled { opacity: 0.35; cursor: not-allowed; }
   }
 }
+
+// ─── Empty state ──────────────────────────────────────────
+.empty-state-card {
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+  border-radius: 4px;
+  padding: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: var(--font-primary);
+}
+
+.empty-state-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  .empty-icon {
+    font-size: 48px;
+    color: var(--color-text-muted, #999);
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-navy);
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--color-text-muted, #666);
+    max-width: 320px;
+    line-height: 1.5;
+  }
+}

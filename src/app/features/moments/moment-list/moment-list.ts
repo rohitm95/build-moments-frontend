@@ -1,7 +1,6 @@
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 
 export interface Moment {
   id: number;
@@ -10,16 +9,17 @@ export interface Moment {
   tags: string[];
 }
 
-const ALL_MOMENTS: Moment[] = Array.from({ length: 100 }, (_, i) => ({
-  id: i + 1,
-  imageUrl: `https://i.pravatar.cc/40?u=moment${i + 1}`,
-  title: 'Sample title 1',
-  tags: ['tag 1'],
-}));
+const ALL_MOMENTS: Moment[] = [];
+//  = Array.from({ length: 100 }, (_, i) => ({
+//   id: i + 1,
+//   imageUrl: `https://i.pravatar.cc/40?u=moment${i + 1}`,
+//   title: 'Sample title 1',
+//   tags: ['tag 1'],
+// }));
 
 @Component({
   selector: 'app-moment-list',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './moment-list.html',
   styleUrl: './moment-list.scss',
 })

@@ -65,17 +65,14 @@
           <label class="auth-field__label" for="su-phone">Mobile No.</label>
           <div class="auth-field__row">
             <div class="auth-field__phone-prefix">
-              <span class="flag">🇮🇳</span>
-              <select
+              <input
+                type="text"
                 [ngModel]="countryCode()"
                 (ngModelChange)="countryCode.set($event)"
                 name="countryCode"
                 aria-label="Country code"
-              >
-                <option value="+91">+91 ▾</option>
-                <option value="+1">+1 ▾</option>
-                <option value="+44">+44 ▾</option>
-              </select>
+                placeholder="+1"
+              />
             </div>
             <input
               id="su-phone"

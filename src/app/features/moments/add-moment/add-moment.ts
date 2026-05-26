@@ -1,9 +1,11 @@
-import { Component, signal, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, signal, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
+import { Moment as MomentService } from '../../../core/services/moment';
 
 export interface UploadingFile {
   id: number;
@@ -11,6 +13,8 @@ export interface UploadingFile {
   iconType: 'image' | 'text';
   progress: number;
   size: string;
+  url?: string;
+  error?: any;
 }
 
 @Component({
@@ -27,11 +31,12 @@ export class AddMoment {
   tagInput = signal('');
   tags = signal<string[]>(['tag 1']);
   isDragOver = signal(false);
+  isSubmitting = signal(false);
 
-  uploadingFiles = signal<UploadingFile[]>([
-    { id: 1, name: 'Photo.png', iconType: 'image', progress: 38, size: '6.5 mb' },
-    { id: 2, name: 'file.txt', iconType: 'text', progress: 45, size: '2.5 mb' },
-  ]);
+  uploadingFiles = signal<UploadingFile[]>([]);
+
+  private momentService = inject(MomentService);
+  private router = inject(Router);
 
   addTag(event: KeyboardEvent) {
     if (event.key === 'Enter') {
@@ -88,23 +93,31 @@ export class AddMoment {
       size: this.formatSize(file.size),
     }));
     this.uploadingFiles.update((existing) => [...existing, ...newFiles]);
-    // Simulate progress
-    newFiles.forEach((f) => this.simulateProgress(f.id));
+    
+    files.forEach((file, index) => {
+      this.startUpload(file, newFiles[index].id);
+    });
   }
 
-  private simulateProgress(id: number) {
-    const interval = setInterval(() => {
-      this.uploadingFiles.update((files) =>
-        files.map((f) => {
+  private startUpload(file: File, id: number) {
+    this.momentService.uploadFile(file).subscribe({
+      next: (res: any) => {
+        this.uploadingFiles.update(files => files.map(f => {
           if (f.id === id) {
-            const next = Math.min(f.progress + Math.random() * 10, 100);
-            if (next >= 100) clearInterval(interval);
-            return { ...f, progress: Math.round(next) };
+            return { ...f, progress: res.progress, url: res.downloadUrl };
           }
           return f;
-        })
-      );
-    }, 400);
+        }));
+      },
+      error: (err: any) => {
+        this.uploadingFiles.update(files => files.map(f => {
+          if (f.id === id) {
+            return { ...f, error: err };
+          }
+          return f;
+        }));
+      }
+    });
   }
 
   private formatSize(bytes: number): string {
@@ -112,10 +125,23 @@ export class AddMoment {
     return mb >= 1 ? `${mb.toFixed(1)} mb` : `${(bytes / 1024).toFixed(0)} kb`;
   }
 
-  onSubmit() {
-    console.log('Submitting moment:', {
-      title: this.title(),
-      tags: this.tags(),
-    });
+  async onSubmit() {
+    this.isSubmitting.set(true);
+    const uploadedUrls = this.uploadingFiles()
+      .filter(f => f.url)
+      .map(f => f.url as string);
+
+    try {
+      await this.momentService.createMoment({
+        title: this.title(),
+        tags: this.tags(),
+        files: uploadedUrls
+      });
+      this.router.navigate(['/moments']);
+    } catch (error) {
+      console.error('Submission failed', error);
+    } finally {
+      this.isSubmitting.set(false);
+    }
   }
 }

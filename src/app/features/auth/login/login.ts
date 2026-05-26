@@ -1,7 +1,8 @@
 import { Component, signal, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { Auth as AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,8 @@ import { RouterLink } from '@angular/router';
 })
 export class Login {
   private location = inject(Location);
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
   email = signal('');
   password = signal('');
@@ -26,14 +29,21 @@ export class Login {
     this.location.back();
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.errorMessage.set('');
     if (!this.email() || !this.password()) {
       this.errorMessage.set('Please fill in all fields.');
       return;
     }
     this.isLoading.set(true);
-    // TODO: connect to auth service
-    setTimeout(() => this.isLoading.set(false), 1200);
+    
+    try {
+      await this.authService.login(this.email(), this.password());
+      this.router.navigate(['/moments']);
+    } catch (error: any) {
+      this.errorMessage.set(error.message || 'Login failed. Please check your credentials.');
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

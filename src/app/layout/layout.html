@@ -1,4 +1,4 @@
-<div class="app-shell">
+<div class="app-shell" [class.app-shell--sidebar-open]="sidebarOpen()">
   <!-- Sidebar -->
   <aside class="sidebar" aria-label="Main navigation">
     <div class="sidebar__logo">
@@ -63,12 +63,20 @@
   <div class="main-area">
     <!-- Top bar -->
     <header class="topbar" aria-label="Top navigation">
-      <button class="topbar__menu-btn" aria-label="Open menu">
+      <button class="topbar__menu-btn" aria-label="Open menu" (click)="toggleSidebar()">
         <img src="/assets/icons/menu.svg" alt="" />
       </button>
-      <div class="topbar__user">
-        <img src="/assets/images/user-avatar.jpg" alt="User avatar" class="topbar__avatar" />
-        <img src="/assets/icons/chevron-down.svg" alt="User menu" class="topbar__user-chevron" />
+      <div class="topbar__user-container">
+        <div class="topbar__user" (click)="toggleUserMenu()">
+          <img [src]="userAvatarUrl()" alt="User avatar" class="topbar__avatar" />
+          <img src="/assets/icons/chevron-down.svg" alt="User menu" class="topbar__user-chevron" />
+        </div>
+        @if (userMenuExpanded()) {
+          <div class="topbar__user-dropdown">
+            <a routerLink="/profile" class="topbar__user-dropdown-item" (click)="toggleUserMenu()">Profile</a>
+            <button class="topbar__user-dropdown-item" (click)="logout()">Logout</button>
+          </div>
+        }
       </div>
     </header>
 
