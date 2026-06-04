@@ -11,9 +11,9 @@ import { Auth as AuthService } from '../../../core/services/auth';
   styleUrl: './login.scss',
 })
 export class Login {
-  private location = inject(Location);
-  private router = inject(Router);
-  private authService = inject(AuthService);
+  readonly location = inject(Location);
+  readonly router = inject(Router);
+  readonly authService = inject(AuthService);
 
   email = signal('');
   password = signal('');
@@ -40,8 +40,11 @@ export class Login {
     try {
       await this.authService.login(this.email(), this.password());
       this.router.navigate(['/moments']);
-    } catch (error: any) {
-      this.errorMessage.set(error.message || 'Login failed. Please check your credentials.');
+    } catch (error: unknown) {
+      // Log the error for debugging/monitoring and show a user-friendly message
+      // Use console.error so the exception is handled (not swallowed)
+      console.error('Login error:', error);
+      this.errorMessage.set('Login failed. Please check your credentials.');
     } finally {
       this.isLoading.set(false);
     }

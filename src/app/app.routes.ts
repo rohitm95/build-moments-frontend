@@ -43,6 +43,18 @@ export const routes: Routes = [
               import('./features/moments/add-moment/add-moment').then((m) => m.AddMoment),
             data: { title: 'Add new moment' },
           },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./features/moments/add-moment/add-moment').then((m) => m.AddMoment),
+            data: { title: 'Edit moment' },
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/moments/view-moment/view-moment').then((m) => m.ViewMoment),
+            data: { title: 'Moment Details' },
+          },
         ],
       },
     ],

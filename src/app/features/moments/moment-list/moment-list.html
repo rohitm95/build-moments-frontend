@@ -1,5 +1,5 @@
 <div class="moment-list">
-  @if (totalItems > 0) {
+  @if (totalItems() > 0) {
     <div class="table-card">
     <table class="moments-table" aria-label="Moments list">
       <thead>
@@ -21,29 +21,23 @@
         </tr>
       </thead>
       <tbody>
-        @for (moment of pagedItems(); track moment.id) {
+        @for (moment of pagedItems(); track moment.id; let i = $index) {
           <tr>
-            <td class="col-srno">{{ moment.id }}</td>
-            <td class="col-image">
+            <td class="col-srno">{{ (currentPage() - 1) * pageSize() + i + 1 }}</td>
+            <td class="col-image" (click)="onView(moment)" (keydown)="onView(moment)" style="cursor: pointer;">
               <img
                 [src]="moment.imageUrl"
+                loading="lazy"
                 [alt]="'Moment ' + moment.id + ' image'"
                 class="moment-avatar"
               />
             </td>
-            <td class="col-title">{{ moment.title }}</td>
+            <td class="col-title" (click)="onView(moment)" style="cursor: pointer;">{{ moment.title }}</td>
             <td class="col-tags">
               <div class="tag-list">
                 @for (tag of moment.tags; track tag) {
                   <span class="tag-chip">
                     <span class="tag-chip__label">{{ tag }}</span>
-                    <button
-                      class="tag-chip__remove"
-                      (click)="removeTag(moment, tag)"
-                      [attr.aria-label]="'Remove tag ' + tag"
-                    >
-                      <img src="/assets/icons/close-tag.svg" alt="" width="12" height="12" />
-                    </button>
                   </span>
                 }
               </div>
@@ -76,12 +70,12 @@
 
   <!-- Pagination -->
   <div class="pagination">
-    <span class="pagination__label">Items per page</span>
+    <label class="pagination__label" for="pageSizeSelect">Items per page</label>
     <div class="pagination__size-select">
       <select
+        id="pageSizeSelect"
         [ngModel]="pageSize()"
         (ngModelChange)="onPageSizeChange($event)"
-        aria-label="Items per page"
       >
         @for (opt of pageSizeOptions; track opt) {
           <option [value]="opt">{{ opt }}</option>

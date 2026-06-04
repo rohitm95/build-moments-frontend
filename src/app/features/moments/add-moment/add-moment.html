@@ -1,4 +1,10 @@
 <div class="add-moment">
+  <div class="navigation-row">
+    <button class="back-btn" (click)="onBack()" mat-ripple>
+      <span class="material-icons">arrow_back</span>
+      <span>Back to Moments</span>
+    </button>
+  </div>
   <!-- Form card -->
   <div class="form-card">
     <div class="form-card__inner">
@@ -44,6 +50,7 @@
               [ngModel]="tagInput()"
               (ngModelChange)="tagInput.set($event)"
               (keydown)="addTag($event)"
+              (blur)="onBlur()"
               aria-label="Add tag"
             />
           </div>
@@ -51,60 +58,59 @@
         </div>
 
         <!-- Uploading files -->
-        <div class="upload-list">
-          <p class="upload-list__label">Uploading</p>
+         @if (uploadingFiles().length > 0) {
+          <div class="upload-list">
+            <p class="upload-list__label">Uploading</p>
 
-          @for (file of uploadingFiles(); track file.id) {
-            <div class="upload-item">
-              <div class="upload-item__icon">
-                <img
-                  [src]="file.iconType === 'image' ? '/assets/icons/file-image.svg' : '/assets/icons/file-text.svg'"
-                  [alt]="file.iconType === 'image' ? 'Image file' : 'Text file'"
-                  width="42"
-                  height="42"
-                />
+            @for (file of uploadingFiles(); track file.id) {
+              <div class="upload-item">
+                <div class="upload-item__icon">
+                  <img
+                    [src]="file.iconType === 'image' ? '/assets/icons/file-image.svg' : '/assets/icons/file-text.svg'"
+                    [alt]="file.iconType === 'image' ? 'Image file' : 'Text file'"
+                    width="42"
+                    height="42"
+                  />
+                </div>
+                <div class="upload-item__info">
+                  <div class="upload-item__header">
+                    <span class="upload-item__name">{{ file.name }}</span>
+                    <button
+                      class="upload-item__cancel"
+                      (click)="removeFile(file.id)"
+                      [attr.aria-label]="'Cancel upload of ' + file.name"
+                      title="Cancel upload"
+                    >
+                      <img src="/assets/icons/close-file.svg" alt="" width="10" height="10" />
+                    </button>
+                  </div>
+                  <div class="upload-item__progress-track">
+                    <progress
+                      class="upload-item__progress-fill"
+                      [value]="file.progress"
+                      max="100"
+                      [attr.aria-label]="file.name + ' upload progress'"
+                    ></progress>
+                  </div>
+                  <div class="upload-item__stats">
+                    <span>{{ file.progress }}% done</span>
+                    <span>{{ file.size }}</span>
+                  </div>
+                </div>
               </div>
-              <div class="upload-item__info">
-                <div class="upload-item__header">
-                  <span class="upload-item__name">{{ file.name }}</span>
-                  <button
-                    class="upload-item__cancel"
-                    (click)="removeFile(file.id)"
-                    [attr.aria-label]="'Cancel upload of ' + file.name"
-                    title="Cancel upload"
-                  >
-                    <img src="/assets/icons/close-file.svg" alt="" width="10" height="10" />
-                  </button>
-                </div>
-                <div class="upload-item__progress-track">
-                  <div
-                    class="upload-item__progress-fill"
-                    [style.width.%]="file.progress"
-                    [attr.aria-valuenow]="file.progress"
-                    role="progressbar"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <div class="upload-item__stats">
-                  <span>{{ file.progress }}% done</span>
-                  <span>{{ file.size }}</span>
-                </div>
-              </div>
-            </div>
           }
-        </div>
+          </div>
+      }
       </div>
 
       <!-- Right: drag and drop zone -->
-      <div
+      <section
         #dropZone
         class="drop-zone"
         [class.drop-zone--active]="isDragOver()"
         (dragover)="onDragOver($event)"
         (dragleave)="onDragLeave()"
         (drop)="onDrop($event)"
-        role="region"
         aria-label="File upload drop zone"
       >
         <img src="/assets/icons/upload.svg" alt="" class="drop-zone__icon" />
@@ -127,14 +133,69 @@
           aria-hidden="true"
           tabindex="-1"
         />
-      </div>
+      </section>
     </div>
   </div>
 
   <!-- Submit button -->
   <div class="submit-row">
-    <button class="submit-btn" (click)="onSubmit()" aria-label="Submit new moment">
-      Submit
+    <button class="submit-btn" (click)="onSubmit()" [attr.aria-label]="momentId ? 'Update moment' : 'Submit new moment'">
+      {{ momentId ? 'Update' : 'Submit' }}
     </button>
   </div>
+
+  <!-- Preview Modal -->
+  @if (showPreview()) {
+    <div class="preview-modal-overlay" (click)="cancelPreview()" (keydown.escape)="cancelPreview()">
+      <div
+        class="preview-modal"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="preview-modal__header">
+          <h2 class="preview-modal__title">Preview File</h2>
+          <button
+            class="preview-modal__close"
+            (click)="cancelPreview()"
+            aria-label="Close preview"
+            title="Close preview"
+          >
+            <img src="/assets/icons/close-file.svg" alt="" width="20" height="20" />
+          </button>
+        </div>
+
+        <div class="preview-modal__content">
+          @if (previewFile()?.iconType === 'image' && previewFile()?.preview) {
+            <img
+              [src]="previewFile()!.preview"
+              alt="Preview"
+              class="preview-modal__image"
+            />
+          } @else {
+            <div class="preview-modal__file-icon">
+              <img
+                [src]="'/assets/icons/file-' + (previewFile()?.iconType === 'image' ? 'image' : 'text') + '.svg'"
+                [alt]="previewFile()?.iconType === 'image' ? 'Image file' : 'Text file'"
+                width="64"
+                height="64"
+              />
+            </div>
+          }
+        </div>
+
+        <div class="preview-modal__info">
+          <p class="preview-modal__filename">{{ previewFile()?.file?.name }}</p>
+          <p class="preview-modal__filesize">{{ formatPreviewFileSize(previewFile()?.file?.size) }}</p>
+        </div>
+
+        <div class="preview-modal__actions">
+          <button class="preview-modal__btn preview-modal__btn--cancel" (click)="cancelPreview()">
+            Cancel
+          </button>
+          <button class="preview-modal__btn preview-modal__btn--confirm" (click)="confirmUpload()">
+            Upload
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

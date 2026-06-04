@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Auth as FirebaseAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
@@ -17,9 +17,10 @@ export interface UserProfile {
   providedIn: 'root',
 })
 export class Auth {
-  private auth = inject(FirebaseAuth);
-  private firestore = inject(Firestore);
-  private storage = inject(Storage);
+  readonly auth = inject(FirebaseAuth);
+  readonly firestore = inject(Firestore);
+  readonly storage = inject(Storage);
+  currentUserProfile = signal<UserProfile | null>(null);
 
   login(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -45,7 +46,9 @@ export class Auth {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     const docSnap = await getDoc(userDocRef);
     if (docSnap.exists()) {
-      return docSnap.data() as UserProfile;
+      const profile = docSnap.data() as UserProfile;
+      this.currentUserProfile.set(profile);
+      return profile;
     }
     return null;
   }
@@ -53,6 +56,11 @@ export class Auth {
   async updateUserProfile(uid: string, profile: Partial<UserProfile>): Promise<void> {
     const userDocRef = doc(this.firestore, `users/${uid}`);
     await updateDoc(userDocRef, profile);
+    // Update the in-memory signal
+    const currentProfile = this.currentUserProfile();
+    if (currentProfile) {
+      this.currentUserProfile.set({ ...currentProfile, ...profile });
+    }
   }
 
   async uploadProfilePicture(uid: string, file: Blob): Promise<string> {

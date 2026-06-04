@@ -44,3 +44,15 @@ body {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+
+// Global font overrides for Material overlays, dialogs, and buttons
+.cdk-overlay-container,
+.mat-mdc-dialog-container,
+.mat-mdc-dialog-title,
+.mat-mdc-dialog-content,
+.mat-mdc-dialog-actions,
+.mat-mdc-button,
+.mat-mdc-flat-button,
+.mat-mdc-snack-bar-container {
+  font-family: var(--font-primary) !important;
+}

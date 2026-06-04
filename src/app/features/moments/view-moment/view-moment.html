@@ -1,0 +1,87 @@
+<div class="view-moment">
+  <!-- Back navigation -->
+  <div class="navigation-row">
+    <button class="back-btn" (click)="onBack()" mat-ripple>
+      <span class="material-icons">arrow_back</span>
+      <span>Back to Moments</span>
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loader-card">
+      <div class="spinner"></div>
+      <p>Loading moment details...</p>
+    </div>
+  } @else if (moment(); as m) {
+    <div class="detail-card">
+      <div class="detail-card__header">
+        <h1 class="detail-card__title">{{ m.title }}</h1>
+        <div class="detail-card__actions">
+          <button class="action-btn action-btn--edit" (click)="onEdit()" mat-ripple aria-label="Edit moment">
+            <span class="material-icons">edit</span>
+            <span>Edit</span>
+          </button>
+          <button class="action-btn action-btn--delete" (click)="onDelete()" mat-ripple aria-label="Delete moment">
+            <span class="material-icons">delete</span>
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tag chips -->
+      @if (m.tags && m.tags.length > 0) {
+        <div class="tags-row">
+          @for (tag of m.tags; track tag) {
+            <span class="tag-chip">
+              <span class="tag-chip__label">#{{ tag }}</span>
+            </span>
+          }
+        </div>
+      }
+
+      <div class="divider"></div>
+
+      <!-- Media gallery / content showcase -->
+      <div class="media-section">
+        <h2 class="section-subtitle">Attached Files</h2>
+        
+        @if (m.files && m.files.length > 0) {
+          <div class="files-grid">
+            @for (fileUrl of m.files; track fileUrl) {
+              @if (isImageFile(fileUrl)) {
+                <div class="media-wrapper image-card">
+                  <img [src]="fileUrl" [alt]="m.title + ' image attachment'" class="gallery-image" />
+                </div>
+              } @else {
+                <div class="media-wrapper file-card">
+                  <div class="file-icon-box">
+                    <img src="/assets/icons/file-text.svg" alt="Text file icon" width="48" height="48" />
+                  </div>
+                  <div class="file-info">
+                    <span class="file-name">{{ getFileName(fileUrl) }}</span>
+                    <a [href]="fileUrl" target="_blank" download class="download-link" mat-ripple>
+                      <span class="material-icons">download</span>
+                      <span>Download</span>
+                    </a>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        } @else {
+          <div class="empty-media">
+            <span class="material-icons empty-media-icon">photo_library</span>
+            <p>No media files attached to this moment.</p>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="error-card">
+      <span class="material-icons error-icon">error_outline</span>
+      <h2>Moment not found</h2>
+      <p>The requested moment could not be located. It may have been deleted or the link is incorrect.</p>
+      <button class="error-btn" (click)="onBack()" mat-ripple>Back to List</button>
+    </div>
+  }
+</div>

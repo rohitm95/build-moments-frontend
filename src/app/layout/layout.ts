@@ -11,28 +11,28 @@ import { Auth } from '../core/services/auth';
   styleUrl: './layout.scss',
 })
 export class Layout implements OnInit, OnDestroy {
-  private router = inject(Router);
-  private authService = inject(Auth);
+  readonly router = inject(Router);
+  readonly authService = inject(Auth);
   private sub!: Subscription;
 
   momentsExpanded = signal(true);
   userMenuExpanded = signal(false);
-  sidebarOpen = signal(true); // default open on desktop
+  sidebarOpen = signal(!this.isMobile()); // default closed on mobile, open on desktop
   pageTitle = signal('');
-  userAvatarUrl = signal('/assets/images/user-avatar.jpg');
 
-  async ngOnInit() {
+  private isMobile(): boolean {
+    return window.innerWidth < 768;
+  }
+
+  ngOnInit() {
     this.updateTitle(this.router.url);
     this.sub = this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe((e) => this.updateTitle((e as NavigationEnd).url));
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((e) => this.updateTitle(e.url));
 
     const uid = this.authService.getCurrentUserId();
     if (uid) {
-      const profile = await this.authService.getUserProfile(uid);
-      if (profile?.profilePic) {
-        this.userAvatarUrl.set(profile.profilePic);
-      }
+      this.authService.getUserProfile(uid);
     }
   }
 

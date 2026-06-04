@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
-import { Firestore, collection, addDoc, serverTimestamp } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, getDoc, query, orderBy, doc, deleteDoc, updateDoc, serverTimestamp } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface UploadResult {
@@ -19,8 +19,8 @@ export interface MomentData {
   providedIn: 'root',
 })
 export class Moment {
-  private storage = inject(Storage);
-  private firestore = inject(Firestore);
+  readonly storage = inject(Storage);
+  readonly firestore = inject(Firestore);
 
   uploadFile(file: File): Observable<UploadResult> {
     return new Observable((observer) => {
@@ -53,5 +53,55 @@ export class Moment {
       ...data,
       createdAt: serverTimestamp()
     });
+  }
+
+  async getMoments() {
+    const momentsRef = collection(this.firestore, 'moments');
+    const q = query(momentsRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        title: data['title'] || '',
+        tags: data['tags'] || [],
+        files: data['files'] || [],
+        createdAt: data['createdAt']
+      };
+    });
+  }
+
+  async getMoment(id: string) {
+    const momentDocRef = doc(this.firestore, `moments/${id}`);
+    const snapshot = await getDoc(momentDocRef);
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+      return {
+        id: snapshot.id,
+        title: data['title'] || '',
+        tags: data['tags'] || [],
+        files: data['files'] || [],
+        createdAt: data['createdAt']
+      };
+    }
+    return null;
+  }
+
+  async updateMoment(id: string, data: MomentData) {
+    const momentDocRef = doc(this.firestore, `moments/${id}`);
+    return updateDoc(momentDocRef, {
+      ...data,
+      updatedAt: serverTimestamp()
+    });
+  }
+
+  async deleteMoment(id: string) {
+    const momentDocRef = doc(this.firestore, `moments/${id}`);
+    return deleteDoc(momentDocRef);
+  }
+
+  async updateMomentTags(id: string, tags: string[]) {
+    const momentDocRef = doc(this.firestore, `moments/${id}`);
+    return updateDoc(momentDocRef, { tags });
   }
 }

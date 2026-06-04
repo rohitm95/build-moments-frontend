@@ -68,7 +68,7 @@
       </button>
       <div class="topbar__user-container">
         <div class="topbar__user" (click)="toggleUserMenu()">
-          <img [src]="userAvatarUrl()" alt="User avatar" class="topbar__avatar" />
+          <img [src]="authService.currentUserProfile()?.profilePic || '/assets/images/user-avatar.jpg'" alt="User avatar" class="topbar__avatar" />
           <img src="/assets/icons/chevron-down.svg" alt="User menu" class="topbar__user-chevron" />
         </div>
         @if (userMenuExpanded()) {
