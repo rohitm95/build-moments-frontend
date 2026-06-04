@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { Auth as AuthService } from '../../../core/services/auth';
   selector: 'app-signup',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './signup.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './signup.scss',
 })
 export class Signup {

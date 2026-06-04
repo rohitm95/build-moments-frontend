@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,6 +19,7 @@ export interface MomentItem {
   selector: 'app-moment-list',
   imports: [CommonModule, FormsModule, MatSnackBarModule, MatDialogModule],
   templateUrl: './moment-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './moment-list.scss',
 })
 export class MomentList implements OnInit {

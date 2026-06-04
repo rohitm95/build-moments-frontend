@@ -1,4 +1,4 @@
-import { Component, signal, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, signal, ElementRef, ViewChild, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -28,6 +28,7 @@ export interface FilePreview {
   selector: 'app-add-moment',
   imports: [CommonModule, FormsModule, MatProgressBarModule, MatButtonModule, MatRippleModule, MatSnackBarModule],
   templateUrl: './add-moment.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './add-moment.scss',
 })
 export class AddMoment implements OnInit {
