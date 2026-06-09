@@ -7,9 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "e2e": "ng e2e",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "e2e": "ng e2e"
   },
   "prettier": {
     "printWidth": 100,
@@ -45,9 +43,12 @@
     "@angular/cli": "^22.0.0",
     "@angular/compiler-cli": "^22.0.0",
     "@cypress/schematic": "^5.0.0",
+    "@playwright/test": "1.60.0",
+    "@vitest/browser-playwright": "^4.1.8",
     "jsdom": "^27.1.0",
+    "playwright": "^1.60.0",
+    "playwright-ng-schematics": "^21.1.0",
     "typescript": "~6.0.3",
-    "vitest": "^4.0.8",
-    "cypress": "15.16.0"
+    "vitest": "^4.0.8"
   }
 }
