@@ -28,7 +28,7 @@ export interface FilePreview {
   selector: 'app-add-moment',
   imports: [CommonModule, FormsModule, MatProgressBarModule, MatButtonModule, MatRippleModule, MatSnackBarModule],
   templateUrl: './add-moment.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './add-moment.scss',
 })
 export class AddMoment implements OnInit {

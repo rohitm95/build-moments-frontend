@@ -8,7 +8,7 @@ import { Auth } from '../core/services/auth';
   selector: 'app-layout',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './layout.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './layout.scss',
 })
 export class Layout implements OnInit, OnDestroy {

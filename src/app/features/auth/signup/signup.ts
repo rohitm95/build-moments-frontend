@@ -8,7 +8,7 @@ import { Auth as AuthService } from '../../../core/services/auth';
   selector: 'app-signup',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './signup.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './signup.scss',
 })
 export class Signup {

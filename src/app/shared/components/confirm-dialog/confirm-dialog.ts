@@ -14,7 +14,7 @@ export interface ConfirmDialogData {
   standalone: true,
   imports: [MatDialogModule, MatButtonModule],
   templateUrl: './confirm-dialog.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './confirm-dialog.css',
 })
 export class ConfirmDialog {

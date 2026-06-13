@@ -19,7 +19,7 @@ export interface MomentItem {
   selector: 'app-moment-list',
   imports: [CommonModule, FormsModule, MatSnackBarModule, MatDialogModule],
   templateUrl: './moment-list.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './moment-list.scss',
 })
 export class MomentList implements OnInit {

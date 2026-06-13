@@ -8,7 +8,7 @@ import { Auth as AuthService } from '../../../core/services/auth';
   selector: 'app-login',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './login.scss',
 })
 export class Login {

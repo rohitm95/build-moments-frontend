@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ImageCropperComponent],
   templateUrl: './profile.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './profile.scss',
 })
 export class Profile implements OnInit {

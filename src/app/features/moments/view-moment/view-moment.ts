@@ -18,7 +18,7 @@ export interface MomentDetails {
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatRippleModule, MatSnackBarModule],
   templateUrl: './view-moment.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './view-moment.scss',
 })
 export class ViewMoment implements OnInit {
