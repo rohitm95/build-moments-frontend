@@ -84,14 +84,24 @@
 .tag-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   border: 1px solid var(--color-green);
   border-radius: 14px;
-  padding: 3px 6px 3px 12px;
+  padding: 6px 12px;
   font-family: var(--font-primary);
   font-size: 14px;
   font-weight: 400;
   color: var(--color-navy);
+
+  white-space: nowrap;
+  line-height: 1;
+
+  &__label {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
 
   &__remove {
     background: none;

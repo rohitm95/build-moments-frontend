@@ -1,4 +1,4 @@
-import { Component, signal, ElementRef, ViewChild, inject, OnInit } from '@angular/core';
+import { Component, signal, ElementRef, ViewChild, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -28,6 +28,7 @@ export interface FilePreview {
   selector: 'app-add-moment',
   imports: [CommonModule, FormsModule, MatProgressBarModule, MatButtonModule, MatRippleModule, MatSnackBarModule],
   templateUrl: './add-moment.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './add-moment.scss',
 })
 export class AddMoment implements OnInit {
@@ -109,8 +110,11 @@ export class AddMoment implements OnInit {
 
   private createTagFromInput() {
     const val = this.tagInput().trim();
-    if (val && !this.tags().includes(val)) {
-      this.tags.update((tags) => [...tags, val]);
+    if (val) {
+      const tag = `#${val}`;
+      if (!this.tags().includes(val)) {
+        this.tags.update((tags) => [...tags, tag]);
+      }
     }
     this.tagInput.set('');
   }

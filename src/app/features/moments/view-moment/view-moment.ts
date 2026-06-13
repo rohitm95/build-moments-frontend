@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,7 @@ export interface MomentDetails {
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatRippleModule, MatSnackBarModule],
   templateUrl: './view-moment.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './view-moment.scss',
 })
 export class ViewMoment implements OnInit {
