@@ -110,8 +110,11 @@ export class AddMoment implements OnInit {
 
   private createTagFromInput() {
     const val = this.tagInput().trim();
-    if (val && !this.tags().includes(val)) {
-      this.tags.update((tags) => [...tags, val]);
+    if (val) {
+      const tag = `#${val}`;
+      if (!this.tags().includes(val)) {
+        this.tags.update((tags) => [...tags, tag]);
+      }
     }
     this.tagInput.set('');
   }
